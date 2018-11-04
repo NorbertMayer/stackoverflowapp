@@ -9,13 +9,15 @@ import { AppRoutingModule } from "./app-routing.module";
 import { PostsComponent } from "./posts/posts.component";
 import { PostDetailComponent } from "./post-detail/post-detail.component";
 import { NewPostComponent } from "./new-post/new-post.component";
+import { SearchPostPipe } from './shared/search-post.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostsComponent,
     PostDetailComponent,
-    NewPostComponent
+    NewPostComponent,
+    SearchPostPipe
   ],
   imports: [
     BrowserModule,
