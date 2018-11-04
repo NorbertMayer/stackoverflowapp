@@ -1,12 +1,19 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Post } from "../post.service";
+import { Post, PostParams, PostService } from "../post.service";
 
 @Pipe({
-  name: "searchPost",
-  pure: false
+  name: "searchPost"
 })
 export class SearchPostPipe implements PipeTransform {
-  transform(value: any, args?: any): any {
-    return null;
+  transform(post: Post[], filterPost: string): Post[] {
+    if (!post || !filterPost) {
+      return post;
+    }
+
+    return post.filter(post => {
+      return post.title
+        .toLocaleLowerCase()
+        .includes(filterPost.toLocaleLowerCase());
+    });
   }
 }
