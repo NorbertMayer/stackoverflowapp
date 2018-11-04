@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Post, PostParams, PostService } from "../post.service";
+import { Post } from "../post.service";
 
 @Pipe({
   name: "searchPost"
