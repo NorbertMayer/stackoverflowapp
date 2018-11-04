@@ -1,5 +1,16 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
+    <h2>
+      {{ title }}
+    </h2>
+    <p>
+      {{ description }}
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8 offset-md-2">
     <div *ngFor="let comment of comments | async" class="card" style="margin-bottom: 30px">
       <div class="card-body">
         {{ comment.answer }}
@@ -7,9 +18,7 @@
     </div>
   </div>
 </div>
-<div class="row">
 
-</div>
 <div class="row">
   <div class="col-md-8 offset-md-2">
 

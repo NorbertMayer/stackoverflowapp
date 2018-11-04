@@ -4,6 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { mergeMap } from "rxjs/operators";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Comment, CommentParams, CommentService } from "../comment.service";
+import { Post, PostParams, PostService } from "../post.service";
 
 @Component({
   selector: "app-post-detail",
@@ -12,6 +13,9 @@ import { Comment, CommentParams, CommentService } from "../comment.service";
 })
 export class PostDetailComponent implements OnInit {
   comments: BehaviorSubject<Comment[]> = new BehaviorSubject([]);
+  post: Post;
+  title: string;
+  description: string;
   // form
   answerForm: FormGroup;
   public answer: string;
@@ -20,7 +24,8 @@ export class PostDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private commentService: CommentService,
-    private af: FormBuilder
+    private af: FormBuilder,
+    private service: PostService
   ) {
     this.generateFrom();
   }
@@ -36,6 +41,11 @@ export class PostDetailComponent implements OnInit {
     //Every time you navigate to this component it gets comments for postId
     this.commentService.getCommentsForPostId(postId).subscribe(comments => {
       this.comments.next(comments);
+    });
+
+    this.service.getPostById(postId).subscribe(post => {
+      this.title = post.title;
+      this.description = post.description;
     });
   }
 
