@@ -154,6 +154,30 @@ app.get("/api/comment/:id", (req, res) => {
   res.json(comment);
 });
 
+// votes
+// app.post("api/vote", (req, res) => {
+//   const { vote, commentId } = req.body;
+//   vote = {
+//     vote,
+//     commentId
+//   };
+
+//   votes.push(vote);
+
+//   res.json(vote);
+// });
+
+// app.get("/api/vote", (req, res) => {
+//   const { commentId } = req.query;
+//   if (typeof commentId === "string") {
+//     const votesForPost = votes.filter(vote => vote.commentId === commentId);
+//     res.json(votesForPost);
+//   } else {
+//     res.json(votes);
+//   }
+//   console.log(comments[0].id);
+// });
+
 function findPostIdxById(id) {
   return posts.findIndex(post => post.id === id);
 }
