@@ -45,6 +45,19 @@ const posts = [
       "Angular material accordion based on user input override user click on input",
     description:
       "I'm trying to build a small accordion using Angular Material and I want to make an input field so that whenever the user types something, the accordion's panels are automatically expanded if they have subitems which contain that string. "
+  },
+  {
+    id: uuid(),
+    title: "Search for new added divs on a webpage",
+    description:
+      "I have to search for only new added divs into a webpage, these divs are added in real time. I've tried to use Selenium + Python but I can only get elements that are already on the page. Can you please help me?"
+  },
+  {
+    id: uuid(),
+    title:
+      "C# won't let me put certain variables at the beginning of method. I don't understand why not",
+    description:
+      "I've been learning C# for a little over a month. I am working on an exercise where I ask the user to enter a time in a 24-hour clock format and check if it's valid."
   }
 ];
 const comments = [
@@ -69,6 +82,18 @@ const comments = [
   {
     id: uuid(),
     postId: posts[2].id,
+    answer:
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+  },
+  {
+    id: uuid(),
+    postId: posts[3].id,
+    answer:
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+  },
+  {
+    id: uuid(),
+    postId: posts[4].id,
     answer:
       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
   }
