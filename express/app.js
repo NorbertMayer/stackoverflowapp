@@ -65,37 +65,61 @@ const comments = [
     id: uuid(),
     postId: posts[0].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   },
   {
     id: uuid(),
     postId: posts[0].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   },
   {
     id: uuid(),
     postId: posts[1].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   },
   {
     id: uuid(),
     postId: posts[2].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   },
   {
     id: uuid(),
     postId: posts[3].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   },
   {
     id: uuid(),
     postId: posts[4].id,
     answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row."
+      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+    votes: {
+      count: 3, // +1 for each vote
+      score: 100 // add the value of each up/down vote to this
+    }
   }
 ];
 
@@ -155,28 +179,6 @@ app.get("/api/comment/:id", (req, res) => {
 });
 
 // votes
-// app.post("api/vote", (req, res) => {
-//   const { vote, commentId } = req.body;
-//   vote = {
-//     vote,
-//     commentId
-//   };
-
-//   votes.push(vote);
-
-//   res.json(vote);
-// });
-
-// app.get("/api/vote", (req, res) => {
-//   const { commentId } = req.query;
-//   if (typeof commentId === "string") {
-//     const votesForPost = votes.filter(vote => vote.commentId === commentId);
-//     res.json(votesForPost);
-//   } else {
-//     res.json(votes);
-//   }
-//   console.log(comments[0].id);
-// });
 
 function findPostIdxById(id) {
   return posts.findIndex(post => post.id === id);

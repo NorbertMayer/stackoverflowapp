@@ -37,4 +37,10 @@ export interface Comment extends CommentParams {
 export interface CommentParams {
   postId: string;
   answer: string;
+  vote: number;
+}
+
+export interface Vote {
+  count: number;
+  score: number;
 }
