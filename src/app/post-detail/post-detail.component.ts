@@ -16,10 +16,13 @@ export class PostDetailComponent implements OnInit {
   post: Post;
   title: string;
   description: string;
+  comment: Comment;
+  up: boolean;
   // form
   answerForm: FormGroup;
   public answer: string;
   public postId: string;
+  userVote: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +50,10 @@ export class PostDetailComponent implements OnInit {
       this.title = post.title;
       this.description = post.description;
     });
+
+    // this.commentService.vote(comment, up).subscribe(() => {
+    //   console.log("voted up");
+    // });
   }
 
   addComment() {
@@ -71,4 +78,10 @@ export class PostDetailComponent implements OnInit {
     const postId = route.paramMap.get("postId");
     return postId;
   }
+
+  // vote(comment: Comment, up: boolean) {
+  //   return this.commentService.vote(comment, up).subscribe(() => {
+  //     console.log(comment);
+  //   });
+  // }
 }

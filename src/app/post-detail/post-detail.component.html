@@ -14,10 +14,18 @@
     <h4>Answers</h4>
     <div *ngFor="let comment of comments | async" class="card" style="margin-bottom: 30px">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted">Answer id: {{comment.id}}</h6>
+        <h6 class="card-subtitle mb-2 text-muted" style="display: inline-block">
+          Answer id: {{comment.id}}
+        </h6>
+
         <p class="card-text">
           {{ comment.answer }}
         </p>
+        <div>
+          <button class="btn btn-primary" style="margin-right: 20px">up</button>
+          <button class="btn btn-danger" style="margin-right: 20px">down</button>
+          <span>Vote: {{comment.votes.score}}</span>
+        </div>
       </div>
     </div>
   </div>
