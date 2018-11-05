@@ -9,6 +9,7 @@ import { environment } from "../environments/environment";
 export class CommentService {
   comment: BehaviorSubject<Comment[]> = new BehaviorSubject([]);
   private url_prefix: string = environment.express_url;
+  up: boolean;
 
   constructor(private http: HttpClient) {}
 
@@ -27,6 +28,12 @@ export class CommentService {
   // get comments
   getComments(): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${this.url_prefix}/api/comment`);
+  }
+
+  vote(comment: Comment, up: boolean) {
+    return this.http.post(`${this.url_prefix}/api/comment/${comment.id}/vote`, {
+      up
+    });
   }
 }
 

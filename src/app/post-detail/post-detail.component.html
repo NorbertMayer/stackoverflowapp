@@ -22,9 +22,9 @@
           {{ comment.answer }}
         </p>
         <div>
-          <button class="btn btn-primary" style="margin-right: 20px">up</button>
-          <button class="btn btn-danger" style="margin-right: 20px">down</button>
-          <span>Vote: {{comment.votes.score}}</span>
+          <button (click)="vote(comment, true)" class="btn btn-primary" style="margin-right: 20px">up</button>
+          <button (click)="vote(comment, false)" class="btn btn-danger" style="margin-right: 20px">down</button>
+          <span>Vote: {{comment.vote.score}}</span>
         </div>
       </div>
     </div>
