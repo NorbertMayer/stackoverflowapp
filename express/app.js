@@ -151,7 +151,11 @@ app.post("/api/comment", (req, res) => {
   const comment = {
     id: uuid(),
     answer,
-    postId
+    postId,
+    vote: {
+      count: 0,
+      score: 0
+    }
   };
 
   comments.push(comment);
