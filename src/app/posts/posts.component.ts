@@ -8,7 +8,7 @@ import { PostService, Post } from "../post.service";
   styleUrls: ["./posts.component.css"]
 })
 export class PostsComponent implements OnInit {
-  filterPost: any;
+  filterPost: string;
   posts: BehaviorSubject<Post[]> = new BehaviorSubject([]);
   constructor(private service: PostService) {}
 

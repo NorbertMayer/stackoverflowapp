@@ -177,8 +177,6 @@ app.get("/api/comment/:id", (req, res) => {
 });
 
 // votes
-//
-//
 app.post("/api/comment/:id/vote", (req, res) => {
   const index = findCommentIdxById(req.params.id);
   const isUp = req.body.up;
