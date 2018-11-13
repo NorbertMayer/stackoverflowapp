@@ -6,6 +6,9 @@ const morgan = require("morgan");
 // uuid
 const uuid = require("uuid/v4");
 
+/**** App modules ****/
+const db = require("./db");
+
 /**** Configuration ****/
 const port = process.env.PORT || 8080;
 const app = express();
@@ -26,118 +29,80 @@ app.use((req, res, next) => {
   next();
 });
 
-const posts = [
-  {
-    id: uuid(),
-    title: "Angular 6 configurations of the dev server",
-    description:
-      "I hope someone could help me with this because I've been trying to switch from webpack to angular cli. I've accomplished that but when other people pull my branch and try to go to the home page, but for some reason the index.html file gets downloaded and nothing else happens. I cant find anything online talking about this issue. For some reason, the content type header is being applied. Any ideas?"
-  },
-  {
-    id: uuid(),
-    title: "Angular change set data from API",
-    description:
-      "Hey so I'm using an openAPI to get some data. Everything reads in correctly now I want to change the data. Say for 9.00 I get some data and after a couple of hours I get the next result. Now I want the result for 8.00 clock instead, I don't want all results I want it to end at a certain result. How can this be done? I want to change the data to my set times instead."
-  },
-  {
-    id: uuid(),
-    title:
-      "Angular material accordion based on user input override user click on input",
-    description:
-      "I'm trying to build a small accordion using Angular Material and I want to make an input field so that whenever the user types something, the accordion's panels are automatically expanded if they have subitems which contain that string. "
-  },
-  {
-    id: uuid(),
-    title: "Search for new added divs on a webpage",
-    description:
-      "I have to search for only new added divs into a webpage, these divs are added in real time. I've tried to use Selenium + Python but I can only get elements that are already on the page. Can you please help me?"
-  },
-  {
-    id: uuid(),
-    title:
-      "C# won't let me put certain variables at the beginning of method. I don't understand why not",
-    description:
-      "I've been learning C# for a little over a month. I am working on an exercise where I ask the user to enter a time in a 24-hour clock format and check if it's valid."
-  }
-];
-const comments = [
-  {
-    id: uuid(),
-    postId: posts[0].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 1,
-      score: 5
-    }
-  },
-  {
-    id: uuid(),
-    postId: posts[0].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 3,
-      score: 15
-    }
-  },
-  {
-    id: uuid(),
-    postId: posts[1].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 4,
-      score: 20
-    }
-  },
-  {
-    id: uuid(),
-    postId: posts[2].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 3,
-      score: 15
-    }
-  },
-  {
-    id: uuid(),
-    postId: posts[3].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 2,
-      score: 10
-    }
-  },
-  {
-    id: uuid(),
-    postId: posts[4].id,
-    answer:
-      "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-    vote: {
-      count: 3,
-      score: 15
-    }
-  }
-];
+// const comments = [
+//   {
+//     id: uuid(),
+//     postId: posts[0].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 1,
+//       score: 5
+//     }
+//   },
+//   {
+//     id: uuid(),
+//     postId: posts[0].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 3,
+//       score: 15
+//     }
+//   },
+//   {
+//     id: uuid(),
+//     postId: posts[1].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 4,
+//       score: 20
+//     }
+//   },
+//   {
+//     id: uuid(),
+//     postId: posts[2].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 3,
+//       score: 15
+//     }
+//   },
+//   {
+//     id: uuid(),
+//     postId: posts[3].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 2,
+//       score: 10
+//     }
+//   },
+//   {
+//     id: uuid(),
+//     postId: posts[4].id,
+//     answer:
+//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
+//     vote: {
+//       count: 3,
+//       score: 15
+//     }
+//   }
+// ];
 
 // posts
-app.get("/api/post", (req, res) => res.json(posts));
+app.get("/api/post", (req, res) =>
+  db.getPosts({}).then(posts => res.json(posts))
+);
 
 app.post("/api/post", (req, res) => {
   let title = req.body.title;
   let description = req.body.description;
-  let id = uuid();
-  const post = {
-    id: id,
-    title: title,
-    description: description
-  };
-
-  posts.push(post);
-  res.json(post);
+  db.addPost(title, description).then(id => {
+    res.json({ id: id });
+  });
 });
 
 app.get("/api/post/:id", (req, res) => {
@@ -222,6 +187,8 @@ function findCommentById(id) {
   }
   return null;
 }
+
+db.connect();
 
 /**** Reroute all unknown requests to angular index.html ****/
 app.get("/*", (req, res, next) => {
