@@ -21,13 +21,13 @@ export class PostService {
     return this.http.post<Post[]>(this.url_prefix + "/api/post/", post);
   }
   // get post by id
-  getPostById(id: string): Observable<Post> {
-    return this.http.get<Post>(this.url_prefix + `/api/post/${id}`);
+  getPostById(_id: string): Observable<Post> {
+    return this.http.get<Post>(this.url_prefix + `/api/post/${_id}`);
   }
 }
 
 export interface Post extends PostParams {
-  id: string;
+  _id: string;
 }
 
 export interface PostParams {

@@ -7,7 +7,25 @@ const morgan = require("morgan");
 const uuid = require("uuid/v4");
 
 /**** App modules ****/
-const db = require("./db");
+//const db = require("./db");
+const mongodb = require("mongodb");
+let ObjectID = mongodb.ObjectID;
+let db;
+const POST_COLLECTION = "posts";
+
+mongodb.MongoClient.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/stackoverflowdb",
+  function(err, client) {
+    if (err) {
+      console.log(err);
+      process.exit(1);
+    }
+
+    // Save database object from the callback for reuse.
+    db = client.db();
+    console.log("Database connection ready");
+  }
+);
 
 /**** Configuration ****/
 const port = process.env.PORT || 8080;
@@ -29,86 +47,44 @@ app.use((req, res, next) => {
   next();
 });
 
-// const comments = [
-//   {
-//     id: uuid(),
-//     postId: posts[0].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 1,
-//       score: 5
-//     }
-//   },
-//   {
-//     id: uuid(),
-//     postId: posts[0].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 3,
-//       score: 15
-//     }
-//   },
-//   {
-//     id: uuid(),
-//     postId: posts[1].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 4,
-//       score: 20
-//     }
-//   },
-//   {
-//     id: uuid(),
-//     postId: posts[2].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 3,
-//       score: 15
-//     }
-//   },
-//   {
-//     id: uuid(),
-//     postId: posts[3].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 2,
-//       score: 10
-//     }
-//   },
-//   {
-//     id: uuid(),
-//     postId: posts[4].id,
-//     answer:
-//       "I want to match the state in the below csv file to the zip code in another csv file. My dataset also does not contain that many states so I was thinking I could take advantage of a simple conditional expression or case statement that sets a new column equal to a certain zip code if a certain state is in that row.",
-//     vote: {
-//       count: 3,
-//       score: 15
-//     }
-//   }
-// ];
-
 // posts
 app.get("/api/post", (req, res) =>
-  db.getPosts({}).then(posts => res.json(posts))
+  db
+    .collection(POST_COLLECTION)
+    .find({})
+    .toArray(function(err, post) {
+      if (err) {
+        handleError(res, err.message, "Failed to get contacts.");
+      } else {
+        res.status(200).json(post);
+      }
+    })
 );
 
 app.post("/api/post", (req, res) => {
   let title = req.body.title;
   let description = req.body.description;
-  db.addPost(title, description).then(id => {
-    res.json({ id: id });
+  let post = {
+    title: title,
+    description: description
+  };
+
+  db.collection(POST_COLLECTION).insertOne(post, function(err, post) {
+    res.json(post);
   });
 });
 
 app.get("/api/post/:id", (req, res) => {
-  const post = findPostById(req.params.id);
-  // TODO: If post is null, you should throw 404
-  res.json(post);
+  db.collection(POST_COLLECTION).findOne(
+    { _id: new ObjectID(req.params.id) },
+    function(err, post) {
+      if (err) {
+        handleError(res, err.message, "Failed to get post");
+      } else {
+        res.status(200).json(post);
+      }
+    }
+  );
 });
 
 app.post("/api/comment", (req, res) => {
@@ -188,7 +164,7 @@ function findCommentById(id) {
   return null;
 }
 
-db.connect();
+//db.connect();
 
 /**** Reroute all unknown requests to angular index.html ****/
 app.get("/*", (req, res, next) => {
