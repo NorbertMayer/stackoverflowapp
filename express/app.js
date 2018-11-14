@@ -3,11 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-// uuid
-const uuid = require("uuid/v4");
-
 /**** App modules ****/
-//const db = require("./db");
 const mongodb = require("mongodb");
 let ObjectID = mongodb.ObjectID;
 let db;
@@ -15,6 +11,7 @@ const POST_COLLECTION = "posts";
 
 mongodb.MongoClient.connect(
   process.env.MONGODB_URI || "mongodb://localhost:27017/stackoverflowdb",
+  { useNewUrlParser: true },
   function(err, client) {
     if (err) {
       console.log(err);
@@ -54,7 +51,7 @@ app.get("/api/post", (req, res) =>
     .find({})
     .toArray(function(err, post) {
       if (err) {
-        handleError(res, err.message, "Failed to get contacts.");
+        handleError(res, err.message, "Failed to get posts.");
       } else {
         res.status(200).json(post);
       }
@@ -163,8 +160,6 @@ function findCommentById(id) {
   }
   return null;
 }
-
-//db.connect();
 
 /**** Reroute all unknown requests to angular index.html ****/
 app.get("/*", (req, res, next) => {
