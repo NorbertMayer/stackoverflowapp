@@ -31,14 +31,14 @@ export class CommentService {
   }
 
   vote(comment: Comment, up: boolean) {
-    return this.http.post(`${this.url_prefix}/api/comment/${comment.id}/vote`, {
+    return this.http.post(`${this.url_prefix}/api/comment/${comment._id}/vote`, {
       up
     });
   }
 }
 
 export interface Comment extends CommentParams {
-  id: string;
+  _id: string;
 }
 
 export interface CommentParams {

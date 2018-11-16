@@ -7,6 +7,8 @@ const mongodb = require("mongodb");
 /**** App modules ****/
 let ObjectID = mongodb.ObjectID;
 let db;
+let v;
+let vote;
 const POST_COLLECTION = "posts";
 const COMMENT_COLLECTION = "comments";
 
@@ -126,47 +128,25 @@ app.get("/api/comment/:id", (req, res) => {
 });
 
 // votes
+
 app.post("/api/comment/:id/vote", (req, res) => {
-  const index = findCommentIdxById(req.params.id);
   const isUp = req.body.up;
-  if (index !== -1) {
-    const comment = comments[index];
-    const vote = comment.vote;
-    comments.splice(index, 1, {
-      ...comment,
-      vote: {
-        ...vote,
-        count: vote.count + 1,
-        score: isUp ? vote.score + 5 : vote.score - 5
+  const id = new ObjectID(req.params.id);
+
+  db.collection(COMMENT_COLLECTION).findOne({}, function(err, data) {
+    const count = data.vote.count + 1;
+    const score = isUp ? data.vote.score : data.vote.score - 5;
+    const newVal = { $set: { vote: { count, score } } };
+    db.collection(COMMENT_COLLECTION).updateOne(
+      { _id: id },
+      newVal,
+      { upsert: true },
+      function(err, data) {
+        res.json(data);
       }
-    });
-    res.json(vote);
-  }
+    );
+  });
 });
-
-function findPostIdxById(id) {
-  return posts.findIndex(post => post.id === id);
-}
-
-function findPostById(id) {
-  const index = findPostIdxById(id);
-  if (index !== -1) {
-    return posts[index];
-  }
-  return null;
-}
-
-function findCommentIdxById(id) {
-  return comments.findIndex(comment => comment.id === id);
-}
-
-function findCommentById(id) {
-  const index = findCommentIdxById(id);
-  if (index !== -1) {
-    return comments[index];
-  }
-  return null;
-}
 
 /**** Reroute all unknown requests to angular index.html ****/
 app.get("/*", (req, res, next) => {

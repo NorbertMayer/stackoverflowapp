@@ -1,30 +1,40 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
-    <h2>
-      {{ title }}
-    </h2>
-    <p>
-      {{ description }}
-    </p>
+    <h2>{{ title }}</h2>
+    <p>{{ description }}</p>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8 offset-md-2">
     <h4>Answers</h4>
-    <div *ngFor="let comment of comments | async" class="card" style="margin-bottom: 30px">
+    <div
+      *ngFor="let comment of (comments | async)"
+      class="card"
+      style="margin-bottom: 30px"
+    >
       <div class="card-body">
         <h6 class="card-subtitle mb-2 text-muted" style="display: inline-block">
-          Answer id: {{comment.id}}
+          Answer id: {{ comment._id }}
         </h6>
 
-        <p class="card-text">
-          {{ comment.answer }}
-        </p>
+        <p class="card-text">{{ comment.answer }}</p>
         <div>
-          <button (click)="vote(comment, true)" class="btn btn-primary" style="margin-right: 20px">up</button>
-          <button (click)="vote(comment, false)" class="btn btn-danger" style="margin-right: 20px">down</button>
-          <span>Vote: {{comment.vote.score}}</span>
+          <button
+            (click)="vote(comment, true)"
+            class="btn btn-primary"
+            style="margin-right: 20px"
+          >
+            up
+          </button>
+          <button
+            (click)="vote(comment, false)"
+            class="btn btn-danger"
+            style="margin-right: 20px"
+          >
+            down
+          </button>
+          <span>Vote: {{ comment.vote.score }}</span>
         </div>
       </div>
     </div>
@@ -33,21 +43,38 @@
 
 <div class="row">
   <div class="col-md-8 offset-md-2">
-
     <form [formGroup]="answerForm" novalidate>
       <div class="form-group">
         <h3>Add your answer</h3>
-        <textarea name="answer" formControlName="answer" class="form-control" id="" rows="3"></textarea>
+        <textarea
+          name="answer"
+          formControlName="answer"
+          class="form-control"
+          id=""
+          rows="3"
+        ></textarea>
       </div>
-      <div *ngIf="answerForm.controls['answer'].invalid && (answerForm.controls['answer'].dirty || answerForm.controls['answer'].touched)"
-        class="alert alert-danger">
+      <div
+        *ngIf="
+          answerForm.controls['answer'].invalid &&
+          (answerForm.controls['answer'].dirty ||
+            answerForm.controls['answer'].touched)
+        "
+        class="alert alert-danger"
+      >
         <div *ngIf="answerForm.controls['answer'].errors.required">
           Answer is required.
         </div>
       </div>
 
       <div class="form-group">
-        <button (click)="addComment()" [disabled]="answerForm.pristine || answerForm.invalid" class="btn btn-primary">Submit</button>
+        <button
+          (click)="addComment()"
+          [disabled]="answerForm.pristine || answerForm.invalid"
+          class="btn btn-primary"
+        >
+          Submit
+        </button>
       </div>
     </form>
   </div>
