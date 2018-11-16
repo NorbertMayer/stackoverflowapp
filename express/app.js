@@ -2,12 +2,13 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const mongodb = require("mongodb");
 
 /**** App modules ****/
-const mongodb = require("mongodb");
 let ObjectID = mongodb.ObjectID;
 let db;
 const POST_COLLECTION = "posts";
+const COMMENT_COLLECTION = "comments";
 
 mongodb.MongoClient.connect(
   process.env.MONGODB_URI || "mongodb://localhost:27017/stackoverflowdb",
@@ -59,9 +60,9 @@ app.get("/api/post", (req, res) =>
 );
 
 app.post("/api/post", (req, res) => {
-  let title = req.body.title;
-  let description = req.body.description;
-  let post = {
+  const title = req.body.title;
+  const description = req.body.description;
+  const post = {
     title: title,
     description: description
   };
@@ -84,10 +85,10 @@ app.get("/api/post/:id", (req, res) => {
   );
 });
 
+//comments
 app.post("/api/comment", (req, res) => {
   const { answer, postId } = req.body;
   const comment = {
-    id: uuid(),
     answer,
     postId,
     vote: {
@@ -96,20 +97,26 @@ app.post("/api/comment", (req, res) => {
     }
   };
 
-  comments.push(comment);
-  res.json(comment);
+  db.collection(COMMENT_COLLECTION).insertOne(comment, function(err, comm) {
+    if (err) {
+      handleError(res, err.message, "Failed to add new comment");
+    } else {
+      res.status(200).json(comm);
+    }
+  });
 });
 
 app.get("/api/comment", (req, res) => {
   const { postId } = req.query;
-  if (typeof postId === "string") {
-    const commentsForPost = comments.filter(
-      comment => comment.postId === postId
-    );
-    res.json(commentsForPost);
-  } else {
-    res.json(comments);
-  }
+  db.collection(COMMENT_COLLECTION)
+    .find({ postId })
+    .toArray(function(err, comm) {
+      if (err) {
+        handleError(res, err.message, "Failed to get comments.");
+      } else {
+        res.status(200).json(comm);
+      }
+    });
 });
 
 app.get("/api/comment/:id", (req, res) => {
