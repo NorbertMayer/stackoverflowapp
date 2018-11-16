@@ -135,7 +135,7 @@ app.post("/api/comment/:id/vote", (req, res) => {
 
   db.collection(COMMENT_COLLECTION).findOne({}, function(err, data) {
     const count = data.vote.count + 1;
-    const score = isUp ? data.vote.score : data.vote.score - 5;
+    const score = isUp ? data.vote.score + 5 : data.vote.score - 5;
     const newVal = { $set: { vote: { count, score } } };
     db.collection(COMMENT_COLLECTION).updateOne(
       { _id: id },
