@@ -7,8 +7,6 @@ const mongodb = require("mongodb");
 /**** App modules ****/
 let ObjectID = mongodb.ObjectID;
 let db;
-let v;
-let vote;
 const POST_COLLECTION = "posts";
 const COMMENT_COLLECTION = "comments";
 
@@ -137,11 +135,12 @@ app.post("/api/comment/:id/vote", (req, res) => {
     const count = data.vote.count + 1;
     const score = isUp ? data.vote.score + 5 : data.vote.score - 5;
     const newVal = { $set: { vote: { count, score } } };
-    db.collection(COMMENT_COLLECTION).updateOne(
+    db.collection(COMMENT_COLLECTION).update(
       { _id: id },
       newVal,
       { upsert: true },
       function(err, data) {
+        console.log(data);
         res.json(data);
       }
     );
